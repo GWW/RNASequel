@@ -1,8 +1,8 @@
 DEBUG ?= 0
 
 # External libraries
-BOOST_ROOT ?= /Users/gavin/local
-LIBBAM_ROOT ?= /Users/gavin/local
+BOOST_ROOT ?= /usr
+LIBBAM_ROOT ?= /usr
 BOOST_SUFFIX ?=
 LDADD ?=
 

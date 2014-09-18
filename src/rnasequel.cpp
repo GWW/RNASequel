@@ -47,7 +47,7 @@ int main(int argc, char * argv[]){
              << "  index            Reference genome fasta file indexing\n"
              << "  transcriptome    Transcriptome index generation\n"
              << "  merge            Reference / Transcriptome alignment merging\n"
-             << "  rename           Rename fastq files to lexicographically ordered integers\n"
+             //<< "  rename           Rename fastq files to lexicographically ordered integers\n"
              << "\n";
 
         return 1;
