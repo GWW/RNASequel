@@ -20,10 +20,17 @@ cp src/rnasequel <install directory>
 
 The dependencies for RNASequel can be specified using the following variables:
 
-- BOOST_ROOT  -- The path to the boost library root (default: /usr)
-- LIBBAM_ROOT -- The path to the libbam.a and the samtools header files (default: /usr)
-- BOOST_SUFFIX -- The version / compiler suffix used on boost library includes (Not usually necessary)
-- LDADD -- Extra libraries, for example, on some systems -lrt needs to be included
+- ```BOOST_ROOT  -- The path to the boost library root (default: /usr)```
+- ```LIBBAM_ROOT -- The path to the libbam.a and the samtools header files (default: /usr)```
+- ```BOOST_SUFFIX -- The version / compiler suffix used on boost library includes (Not usually necessary)```
+- ```LDADD -- Extra libraries, for example, on some systems -lrt needs to be included```
+
+For Example:
+
+```bash
+make BOOST_ROOT=/usr/local LIBBAM_ROOT=/usr/local
+```
+
 
 ##Usage:   rnasequel [command] options
 
