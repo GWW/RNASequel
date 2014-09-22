@@ -8,7 +8,11 @@ RNAsequel runs as a post-processing step on top of an RNA-seq aligner and system
 
 ##Installation
 
-The easiest way to obtain the RNASequel source code is to download the latest release LINK.
+The easiest way to obtain the RNASequel source code is to download the [latest release](https://github.com/GWW/RNASequel/releases/latest).  You can also clone the latest version of the repository using:
+
+```base
+git clone https://github.com/GWW/RNASequel.git
+```
 
 RNASequel can be built by typing 
 
