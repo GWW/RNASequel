@@ -352,8 +352,8 @@ void PairResolver::handle_pairs_() {
                     BamRead & r2 = output[output.size() - 1];
                     p.make_pair_copy(ni + 1, kept, r1, r2);
                     double score = p.align_score();
-                    r1.tags.set_value<double>("ZS", score);
-                    r2.tags.set_value<double>("ZS", score);
+                    r1.tags.set_value<float>("ZS", score);
+                    r2.tags.set_value<float>("ZS", score);
                     /*
                     cout << output.size() << "\n";
                     cout << "    " << r1 << "\n";
