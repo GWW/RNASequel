@@ -519,8 +519,8 @@ int rnasequel::build_transcriptome(int argc, char * argv[]) {
                 else          nc_kept++;
             }
         }
-        cout << "  Kept " << kept << " out of " << total_novel << " novel junctions\n";
-        cout << "  Kept " << nc_kept << " out of " << nc_total_novel << " non-canonical novel junctions\n";
+        cout << "\n\nKept " << kept << " out of " << total_novel << " novel junctions\n";
+        cout << "Kept " << nc_kept << " out of " << nc_total_novel << " non-canonical novel junctions\n";
     }
 
     for(auto const & j : ajuncs){
