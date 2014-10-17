@@ -257,6 +257,8 @@ void tx_init_options(int argc, char *argv[], po::variables_map & vm) {
     ("max-intron", po::value< unsigned int >()->default_value(500000), "Maxinum intron size")
     ("min-unique", po::value< unsigned int >()->default_value(2), "Minimum number of unique reads mapping across the junction")
     ("min-count", po::value< unsigned int >()->default_value(2), "Minimum number of reads mapping across the junction (includes repeats if enabled)")
+    ("min-nc-unique", po::value< unsigned int >()->default_value(5), "Minimum number of unique reads mapping across the junction for non-canonical junctions")
+    ("min-nc-count", po::value< unsigned int >()->default_value(5), "Minimum number of reads mapping across the junction (includes repeats if enabled) for non-canonical junctions")
     ("canonical", po::value< string>()->default_value("GTAG,GCAG,GCTG,GCAA,GCGG,GTTG,GTAA,ATAC,ATAA,ATAG"), "Canonical splice sites for strand inference")
     ("use-repeats", "Include junctions contained in the primary alignment of multi-mapped pairs")
     ("min-length", po::value<unsigned int>()->default_value(8), "Minimum exonic alignment length")
@@ -472,6 +474,8 @@ int rnasequel::build_transcriptome(int argc, char * argv[]) {
         unsigned int min_unique    = vm["min-unique"].as<unsigned int>();
         unsigned int min_count     = vm["min-count"].as<unsigned int>();
         unsigned int end_count     = vm["end-count"].as<unsigned int>();
+        unsigned int min_nc_unique    = vm["min-nc-unique"].as<unsigned int>();
+        unsigned int min_nc_count     = vm["min-nc-count"].as<unsigned int>();
 
         size_t kept = 0, total_novel = 0;
 
@@ -479,6 +483,8 @@ int rnasequel::build_transcriptome(int argc, char * argv[]) {
             const Junction & junc    = j.first;
             const JunctionCount & jc = j.second;
             unsigned int isize = junc.isize();
+            const PackedSequence & ref = fi[junc.tid].seq;
+            bool canonical = infer_strand.canonical(ref[junc.lft + 1], ref[junc.lft + 2], ref[junc.rgt - 2], ref[junc.rgt - 1]);
 
             bool found = false;
             if(junc.strand == PLUS){
@@ -491,7 +497,9 @@ int rnasequel::build_transcriptome(int argc, char * argv[]) {
 
             if(!found) total_novel++;
 
-            if(jc.count < min_count || jc.positions.size() < min_unique || isize < min_intron || isize > max_intron || (jc.count - jc.ends) < end_count){
+            if((canonical && (jc.count < min_count || jc.positions.size() < min_unique)) ||
+               (!canonical && (jc.count < min_nc_count || jc.positions.size() < min_nc_unique)) || 
+                isize < min_intron || isize > max_intron || (jc.count - jc.ends) < end_count){
                 continue;
             }
 
