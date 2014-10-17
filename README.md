@@ -73,6 +73,6 @@ bwa mem –L 2,2 -c 20000 -M -k 15 -a -t 8 -B 2 genome.fa {reads1 or 2} | samtoo
 bwa mem –L 2,2 -c 20000 -M -k 15 -a -t 8 -B 2 tx.fa {read 1 or 2} | samtools view -bS -F 4 - > {juncs 1 or 2.bam}
 
 #Merge the alignments and resolve the pairs
-rnasequel merge -r genome.fa -g genes.gtf -j tx.txt ref1.bam -o align.bam ref2.bam juncs1.bam juncs2.bam
+rnasequel merge -r genome.fa -g genes.gtf -j tx.txt -o align.bam ref1.bam ref2.bam juncs1.bam juncs2.bam
 
 ```
