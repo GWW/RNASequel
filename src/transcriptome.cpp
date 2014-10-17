@@ -478,6 +478,7 @@ int rnasequel::build_transcriptome(int argc, char * argv[]) {
         unsigned int min_nc_count     = vm["min-nc-count"].as<unsigned int>();
 
         size_t kept = 0, total_novel = 0;
+        size_t nc_kept = 0, nc_total_novel = 0;
 
         for(auto const & j : counts){
             const Junction & junc    = j.first;
@@ -494,8 +495,11 @@ int rnasequel::build_transcriptome(int argc, char * argv[]) {
             }else{
                 found = ajuncs.find(junc) != ajuncs.end();
             }
-
-            if(!found) total_novel++;
+            
+            if(!found) {
+                if(canonical) total_novel++;
+                else          nc_total_novel++;
+            }
 
             if((canonical && (jc.count < min_count || jc.positions.size() < min_unique)) ||
                (!canonical && (jc.count < min_nc_count || jc.positions.size() < min_nc_unique)) || 
@@ -511,12 +515,12 @@ int rnasequel::build_transcriptome(int argc, char * argv[]) {
                 }else{
                     ajuncs.insert(junc);
                 }
-                kept++;
+                if(canonical) kept++;
+                else          nc_kept++;
             }
         }
         cout << "  Kept " << kept << " out of " << total_novel << " novel junctions\n";
-
-        // Filter the junctions
+        cout << "  Kept " << nc_kept << " out of " << nc_total_novel << " non-canonical novel junctions\n";
     }
 
     for(auto const & j : ajuncs){
