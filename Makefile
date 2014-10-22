@@ -13,7 +13,7 @@ LD_FLAGS += -L${BOOST_ROOT}/lib -lboost_iostreams${BOOST_SUFFIX} -lboost_program
 ifeq (${DEBUG}, 1)
     CXX_FLAGS += -g -O0 -fno-inline
 else
-    CXX_FLAGS += -O3 -march=native -mtune=native -DNDEBUG
+    CXX_FLAGS += -O3 -DNDEBUG
 endif
 
 TARGETS = src/rnasequel
