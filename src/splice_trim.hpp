@@ -57,8 +57,8 @@ class SpliceTrimmer {
         bool trim(BamRead & r) const {
             auto it = refs_.find(r.tname());
             if(it == refs_.end()) return false;
-            unsigned int lbases = count_bases_(r.lft(), it->second.lfts);
-            unsigned int rbases = count_bases_(r.rgt() - min_dist_ - 1, it->second.rgts);
+            unsigned int lbases = count_bases_(r.lft(), it->second.rgts);
+            unsigned int rbases = count_bases_(r.rgt() - min_dist_ - 1, it->second.lfts);
             if(rbases > 0) rbases = min_dist_ - rbases + 1;
             /*
             if(lbases > 0 || rbases > 0){
