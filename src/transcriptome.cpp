@@ -259,6 +259,7 @@ void tx_init_options(int argc, char *argv[], po::variables_map & vm) {
     ("min-count", po::value< unsigned int >()->default_value(2), "Minimum number of reads mapping across the junction (includes repeats if enabled)")
     ("min-nc-unique", po::value< unsigned int >()->default_value(5), "Minimum number of unique reads mapping across the junction for non-canonical junctions")
     ("min-nc-count", po::value< unsigned int >()->default_value(5), "Minimum number of reads mapping across the junction (includes repeats if enabled) for non-canonical junctions")
+    ("skip-non-canonical", "Skip non-canonical junctions")
     ("canonical", po::value< string>()->default_value("GTAG,GCAG,GCTG,GCAA,GCGG,GTTG,GTAA,ATAC,ATAA,ATAG"), "Canonical splice sites for strand inference")
     ("use-repeats", "Include junctions contained in the primary alignment of multi-mapped pairs")
     ("min-length", po::value<unsigned int>()->default_value(8), "Minimum exonic alignment length")
@@ -337,7 +338,7 @@ int rnasequel::build_transcriptome(int argc, char * argv[]) {
     unsigned int read_size  = vm["read-size"].as<unsigned int>();
 
     std::vector<bool>   tskips(fi.size(), false);
-
+    bool skip_nc = vm.count("skip-non-canonical") > 0;
 
     {
 	string skip = vm["skip"].as<string>();
@@ -520,29 +521,31 @@ int rnasequel::build_transcriptome(int argc, char * argv[]) {
             }
         }
         cout << "\n\nKept " << kept << " out of " << total_novel << " novel junctions\n";
-        cout << "Kept " << nc_kept << " out of " << nc_total_novel << " non-canonical novel junctions\n";
+        if(!skip_nc) cout << "Kept " << nc_kept << " out of " << nc_total_novel << " non-canonical novel junctions\n";
     }
 
-    for(auto const & j : ajuncs){
-        Strand lft = strander.find_lft(j.tid, j.lft);
-        Strand rgt = strander.find_rgt(j.tid, j.rgt);
-        Strand strand = BOTH;
+    if(!skip_nc){
+        for(auto const & j : ajuncs){
+            Strand lft = strander.find_lft(j.tid, j.lft);
+            Strand rgt = strander.find_rgt(j.tid, j.rgt);
+            Strand strand = BOTH;
 
-        if(lft != BOTH && rgt != BOTH && lft == rgt){
-            strand = lft;
-        }else if(lft == BOTH && rgt != BOTH){
-            strand = rgt;
-        }else if(lft != BOTH && rgt == BOTH){
-            strand = lft;
-        }
+            if(lft != BOTH && rgt != BOTH && lft == rgt){
+                strand = lft;
+            }else if(lft == BOTH && rgt != BOTH){
+                strand = rgt;
+            }else if(lft != BOTH && rgt == BOTH){
+                strand = lft;
+            }
 
-        if(strand == PLUS){
-            pjuncs.insert(j);
-        }else if(strand == MINUS){
-            mjuncs.insert(j);
-        }else{
-            pjuncs.insert(j);
-            mjuncs.insert(j);
+            if(strand == PLUS){
+                pjuncs.insert(j);
+            }else if(strand == MINUS){
+                mjuncs.insert(j);
+            }else{
+                pjuncs.insert(j);
+                mjuncs.insert(j);
+            }
         }
     }
 
