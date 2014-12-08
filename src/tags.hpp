@@ -294,16 +294,16 @@ inline void BamTag::_init_tag(const std::string & v){
 inline size_t BamTag::size() const {
     switch(_type) {
 	case 'A':
-	    return sizeof(char);
+	    return 1;
 	case 'Z':
 	case 'H':
 	    return _s.length() + 1; // because it should be null terminated
 	case 'd':
-	    return sizeof(double);
+	    return 8;
 	case 'i':
-	    return sizeof(int32_t);
+	    return 4;
 	case 'f':
-	    return sizeof(float);
+	    return 4;
 	}
     return 0;
 }
