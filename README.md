@@ -67,7 +67,7 @@ rnasequel transcriptome -g genes.gtf -r genome.fa –n 76 -b denovo_alignment.ba
 bwa index tx.fa
 
 # Map read 1 and 2 individually to the reference genome
-bwa mem –L 2,2 -c 20000 -M -k 15 -a -t 8 -B 2 genome.fa {reads1 or 2} | samtools view -bS -F 4 - > {ref 1 or 2.bam}
+bwa mem –L 2,2 -k 15 -a -t 8 -B 2 genome.fa {reads1 or 2} | samtools view -bS - > {ref 1 or 2.bam}
 
 # Map read 1 and 2 individually to the transcriptome
 bwa mem –L 2,2 -c 20000 -M -k 15 -a -t 8 -B 2 tx.fa {read 1 or 2} | samtools view -bS -F 4 - > {juncs 1 or 2.bam}
