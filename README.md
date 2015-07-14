@@ -4,7 +4,8 @@ RNAsequel runs as a post-processing step on top of an RNA-seq aligner and system
 
 ##RNASequel Dependencies
 - Boost (www.boost.org)
-- Samtools (https://github.com/samtools/htslib)
+- Samtools (http://sourceforge.net/projects/samtools/files/samtools/0.1.19/). Note: Newer version of samtools are current not supported.
+- GCC Version 4.7+ (for -std=c++11 support)
 
 ##Installation
 
