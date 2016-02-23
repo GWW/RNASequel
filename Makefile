@@ -5,6 +5,7 @@ BOOST_ROOT ?= /usr
 LIBBAM_ROOT ?= /usr
 BOOST_SUFFIX ?=
 LDADD ?=
+STATIC ?= 0
 
 CXX = g++
 CXX_FLAGS += -isystem ${BOOST_ROOT}/include -isystem ${LIBBAM_ROOT}/include -std=c++11 -Wall -Wextra -fPIC -Wstrict-aliasing
@@ -14,6 +15,11 @@ ifeq (${DEBUG}, 1)
     CXX_FLAGS += -g -O0 -fno-inline
 else
     CXX_FLAGS += -O3 -DNDEBUG
+endif
+
+ifeq (${STATIC}, 1)
+    CXX_FLAGS += -static -static-libgcc -static-libstdc++
+    LD_FLAGS += -static -static-libgcc -static-libstdc++
 endif
 
 TARGETS = src/rnasequel

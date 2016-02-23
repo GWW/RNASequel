@@ -164,7 +164,7 @@ int rnasequel::merge_alignments(int argc, char *argv[]) {
     po::variables_map vm;
     merge_init_options(argc,argv,vm);
 
-    bool debug = vm.count("debug") > 0;
+    bool debug = false;
 
     FastaIndex fi(vm["ref"].as<string>());
     fi.load_all();
@@ -220,6 +220,7 @@ int rnasequel::merge_alignments(int argc, char *argv[]) {
             std::vector<PairEstimator*> threads(vm["threads"].as<unsigned int>());
             for(size_t i = 0; i < threads.size(); i++){
                 threads[i] = new PairEstimator;
+                threads[i]->set_debug(debug);
                 threads[i]->set_params(vm["min-score"].as<double>(), vm["min-length"].as<unsigned int>());
                 threads[i]->score_filter.set_scores(vm["match"].as<int>(), vm["mismatch"].as<int>(),
                                            vm["gap-open"].as<int>(), vm["gap-ext"].as<int>(), vm["canonical-motifs"].as<string>(),
@@ -320,6 +321,7 @@ int rnasequel::merge_alignments(int argc, char *argv[]) {
         std::vector<PairResolver*> threads(N);
         for(size_t i = 0; i < threads.size(); i++){
             threads[i] = new PairResolver;
+            threads[i]->set_debug(debug);
             threads[i]->set_params(vm["min-score"].as<double>(), vm["min-length"].as<unsigned int>());
             threads[i]->score_filter.set_scores(vm["match"].as<int>(), vm["mismatch"].as<int>(),
                                        vm["gap-open"].as<int>(), vm["gap-ext"].as<int>(), vm["canonical-motifs"].as<string>(),

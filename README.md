@@ -29,6 +29,7 @@ The dependencies for RNASequel can be specified using the following variables:
 - ```LIBBAM_ROOT -- The path to the libbam.a and the samtools header files (default: /usr)```
 - ```BOOST_SUFFIX -- The version / compiler suffix used on boost library includes (Not usually necessary)```
 - ```LDADD -- Extra libraries, for example, on some systems -lrt needs to be included```
+- ```STATIC -- 0 by default 1 to compile a statically linked binary```
 
 For Example:
 

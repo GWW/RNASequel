@@ -504,6 +504,10 @@ void PairEstimator::process_one() {
     if(count == 1){
         for(size_t i = 0; i < pairs.size(); i++){
             if(!pairs[i].filtered() && fsize.estimate_size(pairs[i])){
+                if(debug_){
+                    cout << "Passed Pair: \n";
+                    pairs[i].debug(cout);
+                }
                 num_passed++;
             }
         }
